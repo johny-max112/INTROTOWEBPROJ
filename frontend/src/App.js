@@ -13,6 +13,7 @@ import ConcernsPage from './pages/ConcernsPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminAnnouncementsManager from './pages/AdminAnnouncementsManager';
 import AdminEventsManager from './pages/AdminEventsManager';
+import AdminDiscussionsManager from './pages/AdminDiscussionsManager';
 import UserProfile from './pages/UserProfile';
 
 import { AuthProvider } from './auth/AuthContext';
@@ -44,6 +45,7 @@ function AppContent(){
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/announcements" element={<AdminRoute><AdminAnnouncementsManager /></AdminRoute>} />
             <Route path="/admin/events" element={<AdminRoute><AdminEventsManager /></AdminRoute>} />
+            <Route path="/admin/discussions" element={<AdminRoute><AdminDiscussionsManager /></AdminRoute>} />
             <Route path="/profile/:id" element={<UserProfile />} />
           </Routes>
         </main>

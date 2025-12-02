@@ -19,7 +19,9 @@ export default function LoginPage(){
       const token = res.data.token;
       const user = res.data.user || null;
       login(token, user);
-      navigate('/');
+      // If admin, go straight to admin dashboard
+      if (user && user.role === 'admin') navigate('/admin');
+      else navigate('/');
     } catch (err) {
       setMsg(err?.response?.data?.message || 'Login failed');
     }

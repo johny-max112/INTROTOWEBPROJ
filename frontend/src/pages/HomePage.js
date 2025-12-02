@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import API from '../api';
 import Header from '../components/Header';
 import NewPostModal from '../components/NewPostModal';
-import './home.css';
+import '../styles/home.css';
 
 export default function HomePage() {
   const [announcements, setAnnouncements] = useState([]);
@@ -10,9 +10,13 @@ export default function HomePage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    API.get('/announcements').then(r => setAnnouncements(r.data)).catch(() => {});
-    // fetch recent admin posts - using announcements as example
-    API.get('/announcements?limit=5').then(r => setRecentAdminPosts(r.data)).catch(() => {});
+    API.get('/announcements')
+      .then(r => setAnnouncements(r.data))
+      .catch(() => {});
+
+    API.get('/announcements?limit=5')
+      .then(r => setRecentAdminPosts(r.data))
+      .catch(() => {});
   }, []);
 
   return (
@@ -27,6 +31,20 @@ export default function HomePage() {
         <div className="tile" onClick={() => window.location.href = '/discussions'}>General Discussion</div>
       </div>
 
+      {/* Announcements Section */}
+      <section className="announcements-section">
+        
+        <div className="announcements-list">
+          {announcements.map(a => (
+            <article key={a.id} className="announcement-item">
+              <h4>{a.title}</h4>
+              <p>{a.content}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Recent Admin Posts Section */}
       <section className="recent-section">
         <h2>Recent Admin Posts</h2>
         <div className="recent-list">

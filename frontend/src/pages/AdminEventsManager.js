@@ -24,8 +24,15 @@ export default function AdminEventsManager(){
   };
 
   const remove = async (id)=>{
-    if(!confirm('Delete event?')) return;
-    try{ await API.delete(`/events/${id}`); load(); }catch(err){ alert('Delete failed'); }
+    if(!window.confirm('Delete event?')) return;
+    try{
+      await API.delete(`/events/${id}`);
+      load();
+    }catch(err){
+      const status = err?.response?.status;
+      const msg = err?.response?.data?.message || err.message || 'Delete failed';
+      alert(`Delete failed (${status}): ${msg}`);
+    }
   };
 
   return (
