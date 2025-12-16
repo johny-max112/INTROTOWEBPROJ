@@ -1,0 +1,164 @@
+/* Top-level page container */
+.announcement-page {
+	background: #ffffff;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Main content area under the red header */
+.announcement-container {
+	max-width: 900px;
+	margin: 0 0 0 16px;
+	padding: 16px;
+}
+
+.announcement-topbar {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin: 8px 0 16px;
+}
+
+.back-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+	border: 1px solid #ddd;
+	color: #111;
+	text-decoration: none;
+	background: #fff;
+}
+
+.back-icon { font-size: 18px; line-height: 1; }
+
+.page-title {
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0;
+}
+
+.page-subtitle {
+	font-size: 14px;
+	color: #666;
+	margin: 4px 0 0;
+}
+
+/* Tabs */
+.tabs {
+	display: flex;
+	gap: 8px;
+	margin: 8px 0 20px;
+}
+
+.tab {
+	padding: 8px 14px;
+	font-size: 14px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background: #f7f7f7;
+	color: #333;
+	cursor: pointer;
+}
+
+.tab.active {
+	background: #fff;
+	border-color: #c33;
+	color: #c33;
+}
+
+/* Cards list */
+.cards { display: flex; flex-direction: column; gap: 14px; }
+
+.card {
+	background: #fff;
+	border: 1px solid #e2e2e2;
+	border-radius: 10px;
+	padding: 14px;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+}
+
+.card-header { display: flex; align-items: center; justify-content: space-between; }
+
+.author { display: flex; align-items: center; gap: 10px; }
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	border: 1px solid #ddd;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f2f2f2;
+}
+
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-fallback { font-size: 20px; }
+
+.author-meta { display: flex; flex-direction: column; gap: 4px; }
+.author-line { display: flex; align-items: center; gap: 6px; }
+.author-name { font-weight: 600; }
+.dot { color: #999; }
+.time { color: #777; font-size: 13px; }
+
+.badge {
+	display: inline-block;
+	font-size: 11px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: #ffe8e8;
+	color: #c33;
+	border: 1px solid #ffcfcf;
+	width: fit-content;
+}
+
+.card-body { margin-top: 10px; }
+.card-title { margin: 0 0 6px; font-size: 18px; font-weight: 700; }
+.card-text { margin: 0; color: #333; line-height: 1.5; }
+
+.details { margin-top: 8px; color: #444; font-size: 14px; }
+.details strong { font-weight: 600; }
+
+.card-footer {
+	display: flex;
+	justify-content: flex-start; /* align metrics to the left */
+	gap: 18px;
+	align-items: center;
+	margin-top: 12px;
+	padding-top: 10px;
+	border-top: 1px dashed #eee;
+}
+
+.metric { display: inline-flex; align-items: center; gap: 6px; color: #555; }
+.btn-metric { background: transparent; border: none; padding: 4px 6px; cursor: pointer; }
+.btn-metric:hover { color: #000; }
+.btn-metric.liked { color: #c33; font-weight: 700; }
+.btn-metric.liked svg { fill: currentColor; }
+.metric-icon { width: 18px; height: 18px; }
+.metric-count { font-weight: 600; }
+
+.empty { color: #777; text-align: center; padding: 24px 0; }
+
+@media (max-width: 640px) {
+	.announcement-container { padding: 12px; }
+	.page-title { font-size: 20px; }
+	.card { padding: 12px; }
+}
+
+/* Comments */
+.comments { margin-top: 8px; }
+.comments-list { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
+.comment { border-top: 1px solid #f0f0f0; padding-top: 8px; }
+.comment-meta { font-size: 12px; color: #666; display: flex; align-items: center; gap: 6px; }
+.comment-author { font-weight: 600; }
+.comment-content { font-size: 14px; color: #333; }
+.comment-empty { color: #888; font-size: 13px; }
+.comment-form { display: flex; gap: 8px; margin-top: 10px; }
+.comment-form input { flex: 1; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+.comment-form button { padding: 8px 12px; border: 1px solid #c33; color: #c33; background: #fff; border-radius: 6px; cursor: pointer; }
+.comment-form button:hover { background: #ffe8e8; }

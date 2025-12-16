@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
+const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -49,3 +50,10 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+// Get current authenticated user
+router.get('/me', authenticateToken, (req, res) => {
+  const user = req.user || null;
+  if (!user) return res.status(401).json({ message: 'Not authenticated' });
+  res.json({ user: { id: user.id, name: user.name, role: user.role } });
+});

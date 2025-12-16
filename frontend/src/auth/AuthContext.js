@@ -19,8 +19,27 @@ export function AuthProvider({ children }){
   const [user, setUser] = useState(getUserFromLocal());
 
   useEffect(()=>{
-    const token = localStorage.getItem('token');
-    if (token) API.setAuthToken(token);
+    const init = async ()=>{
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      API.setAuthToken(token);
+      try{
+        const res = await API.get('/auth/me');
+        const userObj = res.data.user;
+        if (userObj) {
+          localStorage.setItem('user', JSON.stringify(userObj));
+          setUser(userObj);
+        }
+      }catch(err){
+        // token invalid or server error; clear stored auth
+        console.warn('Failed to validate token with /auth/me', err?.response?.data || err.message);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        API.setAuthToken(null);
+        setUser(null);
+      }
+    };
+    init();
   }, []);
 
   const login = (token, userObj) =>{

@@ -15,6 +15,7 @@ export default function AdminDashboard(){
   const [suggestions, setSuggestions] = useState([]);
   const [discussions, setDiscussions] = useState([]);
   const [concerns, setConcerns] = useState([]);
+  const [replyMessages, setReplyMessages] = useState({});
 
   const { user } = useContext(AuthContext);
 
@@ -23,7 +24,12 @@ export default function AdminDashboard(){
     API.get('/events').then(r=>setEvents(r.data)).catch(()=>{});
     API.get('/suggestions').then(r=>setSuggestions(r.data)).catch(()=>{});
     API.get('/discussions').then(r=>setDiscussions(r.data)).catch(()=>{});
-    API.get('/concerns').then(r=>setConcerns(r.data)).catch(()=>{});
+    API.get('/concerns').then(r=>{
+      console.log('[admin] /api/concerns response:', r.status, r.data);
+      setConcerns(r.data);
+    }).catch(err=>{
+      console.warn('[admin] /api/concerns failed', err?.response?.status, err?.response?.data || err.message);
+    });
   },[]);
 
   const reloadAll = ()=>{
@@ -143,11 +149,45 @@ export default function AdminDashboard(){
       </section>
       <section>
         <h3>Concerns (Private complaints)</h3>
+        {concerns.length === 0 && <div style={{color:'#666',padding:8}}>No concerns found.</div>}
         {concerns.map(c => (
           <div key={c.id} style={{border:'1px solid #fdd',padding:8,margin:6}}>
             <strong>{c.subject}</strong>
             <div>{c.message}</div>
             <small>From: {c.author}</small>
+
+            {/* show existing replies (if any) */}
+            {c.replies && c.replies.length > 0 && (
+              <div style={{marginTop:8,borderTop:'1px dashed #f99',paddingTop:8}}>
+                <strong>Replies</strong>
+                {c.replies.map(r => (
+                  <div key={r.id} style={{marginTop:6,background:'#fff7f7',padding:6}}>
+                    <div style={{fontSize:12}}><strong>{r.admin_name || 'Admin'}</strong> — <small>{new Date(r.created_at).toLocaleString()}</small></div>
+                    <div>{r.message}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* admin reply form */}
+            {user && user.role === 'admin' && (
+              <div style={{marginTop:8}}>
+                <textarea placeholder="Write a reply to this concern" value={replyMessages[c.id] || ''} onChange={e=>setReplyMessages(prev=>({ ...prev, [c.id]: e.target.value }))} rows={3} style={{width:'100%'}} />
+                <div style={{marginTop:6}}>
+                  <button onClick={async ()=>{
+                    const msg = replyMessages[c.id];
+                    if(!msg) return alert('Please write a reply');
+                    try{
+                      await API.post(`/concerns/${c.id}/reply`, { message: msg });
+                      setReplyMessages(prev=>({ ...prev, [c.id]: '' }));
+                      reloadAll();
+                    }catch(err){
+                      alert(err?.response?.data?.message || 'Reply failed');
+                    }
+                  }}>Reply</button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </section>

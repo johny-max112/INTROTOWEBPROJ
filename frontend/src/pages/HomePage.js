@@ -23,10 +23,15 @@ export default function HomePage() {
     <div className="home-page">
       <Header onOpenNewPost={() => setModalOpen(true)} />
 
-      <div className="home-tiles">
+      {/* First Row: Announcements, Community Events, Concerns & Issues */}
+      <div className="home-tiles-row-1">
         <div className="tile" onClick={() => window.location.href = '/announcements'}>Announcements</div>
         <div className="tile" onClick={() => window.location.href = '/events'}>Community Events</div>
         <div className="tile" onClick={() => window.location.href = '/concerns'}>Concerns & Issues</div>
+      </div>
+
+      {/* Second Row: Suggestions, General Discussion */}
+      <div className="home-tiles-row-2">
         <div className="tile" onClick={() => window.location.href = '/suggestions'}>Suggestions</div>
         <div className="tile" onClick={() => window.location.href = '/discussions'}>General Discussion</div>
       </div>
