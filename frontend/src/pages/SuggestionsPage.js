@@ -13,6 +13,7 @@ export default function SuggestionsPage() {
   const [openCommentsFor, setOpenCommentsFor] = useState(null);
   const [comments, setComments] = useState({});
   const [drafts, setDrafts] = useState({});
+  const baseApi = (process.env.REACT_APP_API_URL || 'http://localhost:4000/api').replace(/\/api\/?$/, '');
 
   useEffect(() => {
     API.get('/suggestions')
@@ -118,7 +119,7 @@ export default function SuggestionsPage() {
       <div className="suggestions-container">
         <div className="suggestions-topbar">
           <Link to="/" className="back-button" aria-label="Go back">
-            <span className="back-icon">←</span>
+            <span className="back-icon">&lt;</span>
           </Link>
           <div>
             <h2 className="page-title">Suggestions</h2>
@@ -172,20 +173,23 @@ export default function SuggestionsPage() {
 
         {/* Cards */}
         <div className="cards">
-          {filtered.map(s => (
+          {filtered.map(s => {
+            const authorAvatar = s.author_avatar || s.avatar || s.user_avatar;
+            const authorName = s.author_name || s.name || 'Community Member';
+            return (
             <article className="card" key={s.id}>
               <div className="card-header">
                 <div className="author">
                   <div className="avatar" aria-hidden>
-                    {s.author_avatar ? (
-                      <img src={s.author_avatar} alt="avatar" />
+                    {authorAvatar ? (
+                      <img src={authorAvatar.startsWith('http') ? authorAvatar : `${baseApi}${authorAvatar}`} alt="avatar" />
                     ) : (
                       <span className="avatar-fallback">💡</span>
                     )}
                   </div>
                   <div className="author-meta">
                     <div className="author-line">
-                      <span className="author-name">{s.author_name || 'Community Member'}</span>
+                      <span className="author-name">{authorName}</span>
                       <span className="dot">•</span>
                       <span className="time">
                         {formatRelativeTime(s.created_at)}
@@ -219,16 +223,29 @@ export default function SuggestionsPage() {
               {openCommentsFor === s.id && (
                 <div className="comments">
                   <div className="comments-list">
-                    {(comments[s.id] || []).map(c => (
+                    {(comments[s.id] || []).map(c => {
+                      const cAvatar = c.author_avatar || c.avatar || c.user_avatar;
+                      const cName = c.author || c.name || 'User';
+                      return (
                       <div className="comment" key={c.id}>
-                        <div className="comment-meta">
-                          <span className="comment-author">{c.author || 'User'}</span>
-                          <span className="dot">•</span>
-                          <span className="time">{formatRelativeTime(c.created_at)}</span>
+                        <div className="comment-avatar" aria-hidden>
+                          {cAvatar ? (
+                            <img src={cAvatar.startsWith('http') ? cAvatar : `${baseApi}${cAvatar}`} alt="avatar" />
+                          ) : (
+                            <span className="avatar-fallback">👤</span>
+                          )}
                         </div>
-                        <div className="comment-content">{c.content}</div>
+                        <div className="comment-body">
+                          <div className="comment-meta">
+                            <span className="comment-author">{cName}</span>
+                            <span className="dot">•</span>
+                            <span className="time">{formatRelativeTime(c.created_at)}</span>
+                          </div>
+                          <div className="comment-content">{c.content}</div>
+                        </div>
                       </div>
-                    ))}
+                      );
+                    })}
                     {(comments[s.id] || []).length === 0 && (
                       <div className="comment-empty">No comments yet.</div>
                     )}
@@ -244,7 +261,8 @@ export default function SuggestionsPage() {
                 </div>
               )}
             </article>
-          ))}
+            );
+          })}
           {filtered.length === 0 && (
             <div className="empty">No suggestions found.</div>
           )}

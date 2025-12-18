@@ -1,6 +1,6 @@
 
 .concerns-page {
-	background: #ffffff;
+	background: #eeeaea;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -24,16 +24,11 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
-	border-radius: 16px;
-	border: 1px solid #ddd;
 	color: #111;
 	text-decoration: none;
-	background: #fff;
 }
 
-.back-icon { font-size: 18px; line-height: 1; }
+.back-icon { font-size: 24px; font-weight: 600; line-height: 1; }
 
 .page-title {
 	font-size: 24px;
@@ -83,6 +78,7 @@
 	border-radius: 6px;
 	font-family: inherit;
 	font-size: 14px;
+	box-sizing: border-box;
 }
 
 .form-group textarea {

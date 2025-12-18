@@ -3,7 +3,7 @@
   align-items:center;
   justify-content:space-between;
   padding:18px 24px;
-  background: linear-gradient(90deg,#fff 0%, #fff 70%);
+  background: linear-gradient(90deg,#c74848 0%, #c74848 70%);
   border-bottom:1px solid #eee;
   position:relative;
 }
@@ -11,14 +11,14 @@
 .header-logo{width:64px;height:64px;border-radius:50%}
 .header-title{line-height:1}
 .title-main{font-weight:700;font-size:18px}
-.title-sub{font-size:12px;color:#666}
+.title-sub{font-size:12px;color:#202020}
 .header-search{flex:1;display:flex;justify-content:center}
 .header-search input{width:60%;padding:10px 12px;border-radius:24px;border:1px solid #ddd}
 .header-right{display:flex;align-items:center;gap:12px}
 .icon-btn{background:#fff;border:1px solid #eee;padding:8px;border-radius:8px}
 .profile-pill{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:20px;border:1px solid #eee}
 .profile-pill img{width:32px;height:32px;border-radius:50%}
-.newpost-container{position:absolute;right:18px;bottom:-18px}
+.newpost-container{position:absolute;right:18px;bottom:-45px}
 .btn-newpost{background:#e74c3c;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
 
 .profile-dropdown{position:absolute;right:0;top:46px;background:#fff;border:1px solid #eee;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,0.08);z-index:3000;min-width:180px;overflow:hidden}

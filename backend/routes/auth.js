@@ -42,7 +42,20 @@ router.post('/login', async (req, res) => {
     if (!ok) return res.status(400).json({ message: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user.id, role: user.role, name: user.name }, process.env.JWT_SECRET || 'secretkey', { expiresIn: '8h' });
-    res.json({ token, user: { id: user.id, name: user.name, role: user.role } });
+    res.json({ token, user: { id: user.id, name: user.name, role: user.role, email: user.email, phone: user.phone, avatar: user.avatar, bio: user.bio } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get current authenticated user
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const [rows] = await pool.query('SELECT id, name, role, email, phone, avatar, bio FROM users WHERE id = ?', [userId]);
+    if (!rows.length) return res.status(404).json({ message: 'User not found' });
+    res.json({ user: rows[0] });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
@@ -50,10 +63,3 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
-
-// Get current authenticated user
-router.get('/me', authenticateToken, (req, res) => {
-  const user = req.user || null;
-  if (!user) return res.status(401).json({ message: 'Not authenticated' });
-  res.json({ user: { id: user.id, name: user.name, role: user.role } });
-});

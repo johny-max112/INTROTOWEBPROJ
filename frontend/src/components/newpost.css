@@ -1,8 +1,57 @@
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:2000}
-.modal-card{background:#fff;padding:18px;border-radius:8px;width:720px;max-width:95%;box-shadow:0 6px 28px rgba(0,0,0,0.18)}
-.modal-card h3{margin-top:0}
-.modal-card label{display:block;margin-top:8px;font-size:13px}
-.modal-card input,.modal-card select,.modal-card textarea{width:100%;padding:8px;border:1px solid #ddd;border-radius:6px;margin-top:6px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-.btn-secondary{background:#fff;border:1px solid #ddd;padding:8px 12px;border-radius:6px;cursor:pointer}
-.btn-primary{background:#e74c3c;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2000
+}
+
+.modal-card{
+    background:#fff;
+    padding:18px;
+    border-radius:8px;
+    width:720px;
+    max-width:95%;box-shadow:0 6px 28px rgba(0,0,0,0.18)
+}
+.modal-card h3
+{
+    margin-top:0
+}
+.modal-card label
+{
+    display:block;
+    margin-top:8px;
+    font-size:13px
+
+}
+
+.modal-card input,.modal-card select,.modal-card textarea
+
+{width:100%;padding:8px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    margin-top:6px
+}
+
+.modal-actions
+{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:12px
+}
+
+.btn-secondary{background:#fff;border:1px solid #ddd;
+    padding:8px 12px;
+    border-radius:6px;
+    cursor:pointer
+}
+
+.btn-primary{background:#e74c3c;
+    color:#fff;
+    border:none;padding:8px 12px;
+    border-radius:6px;
+    cursor:pointer
+}

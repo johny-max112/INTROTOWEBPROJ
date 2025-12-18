@@ -14,17 +14,21 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS announcements (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
   title VARCHAR(255),
   content TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS events (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
   title VARCHAR(255),
   description TEXT,
   event_date DATE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS suggestions (
@@ -54,22 +58,22 @@ CREATE TABLE IF NOT EXISTS concerns (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Comments for suggestions and discussions
+-- Comments for announcements, events, suggestions and discussions
 CREATE TABLE IF NOT EXISTS comments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
-  parent_type ENUM('suggestion','discussion'),
+  parent_type ENUM('announcement','event','suggestion','discussion'),
   parent_id INT,
   content TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Likes for suggestions/discussions
+-- Likes for announcements, events, suggestions/discussions
 CREATE TABLE IF NOT EXISTS likes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
-  parent_type ENUM('suggestion','discussion'),
+  parent_type ENUM('announcement','event','suggestion','discussion'),
   parent_id INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

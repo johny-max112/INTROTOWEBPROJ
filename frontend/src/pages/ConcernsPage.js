@@ -66,7 +66,7 @@ export default function ConcernsPage() {
       <div className="concerns-container">
         <div className="concerns-topbar">
           <Link to="/" className="back-button" aria-label="Go back">
-            <span className="back-icon">←</span>
+            <span className="back-icon">&lt;</span>
           </Link>
           <div>
             <h2 className="page-title">Concerns & Issues</h2>

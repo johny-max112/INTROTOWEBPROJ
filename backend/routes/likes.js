@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/:type/:parentId', async (req, res) => {
   try {
     const { type, parentId } = req.params;
-    if (!['suggestion','discussion'].includes(type)) return res.status(400).json({ message: 'Invalid type' });
+    if (!['announcement','event','suggestion','discussion'].includes(type)) return res.status(400).json({ message: 'Invalid type' });
     const [[{ count }]] = await pool.query('SELECT COUNT(*) as count FROM likes WHERE parent_type = ? AND parent_id = ?', [type, parentId]);
     let userLiked = false;
     const authHeader = req.headers['authorization'];
@@ -27,7 +27,7 @@ router.get('/:type/:parentId', async (req, res) => {
 router.post('/:type/:parentId/toggle', authenticateToken, async (req, res) => {
   try {
     const { type, parentId } = req.params;
-    if (!['suggestion','discussion'].includes(type)) return res.status(400).json({ message: 'Invalid type' });
+    if (!['announcement','event','suggestion','discussion'].includes(type)) return res.status(400).json({ message: 'Invalid type' });
     const [rows] = await pool.query('SELECT * FROM likes WHERE user_id = ? AND parent_type = ? AND parent_id = ?', [req.user.id, type, parentId]);
     if (rows.length) {
       await pool.query('DELETE FROM likes WHERE id = ?', [rows[0].id]);

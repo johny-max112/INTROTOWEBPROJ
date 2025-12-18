@@ -11,6 +11,7 @@ export default function EventsPage() {
   const [openCommentsFor, setOpenCommentsFor] = useState(null);
   const [comments, setComments] = useState({});
   const [drafts, setDrafts] = useState({});
+  const baseApi = (process.env.REACT_APP_API_URL || 'http://localhost:4000/api').replace(/\/api\/?$/, '');
 
   useEffect(() => {
     API.get('/events')
@@ -92,7 +93,7 @@ export default function EventsPage() {
       <div className="events-container">
         <div className="events-topbar">
           <Link to="/" className="back-button" aria-label="Go back">
-            <span className="back-icon">←</span>
+            <span className="back-icon">&lt;</span>
           </Link>
           <div>
             <h2 className="page-title">Community Events</h2>
@@ -122,20 +123,23 @@ export default function EventsPage() {
         </div>
 
         <div className="cards">
-          {filtered.map(e => (
+          {filtered.map(e => {
+            const authorAvatar = e.author_avatar || e.avatar || e.user_avatar;
+            const authorName = e.author_name || e.name || 'Barangay Admin';
+            return (
             <article className="card" key={e.id}>
               <div className="card-header">
                 <div className="author">
                   <div className="avatar" aria-hidden>
-                    {e.author_avatar ? (
-                      <img src={e.author_avatar} alt="avatar" />
+                    {authorAvatar ? (
+                      <img src={authorAvatar.startsWith('http') ? authorAvatar : `${baseApi}${authorAvatar}`} alt="avatar" />
                     ) : (
                       <span className="avatar-fallback">📅</span>
                     )}
                   </div>
                   <div className="author-meta">
                     <div className="author-line">
-                      <span className="author-name">{e.author_name || 'Barangay Admin'}</span>
+                      <span className="author-name">{authorName}</span>
                       <span className="dot">•</span>
                       <span className="time">
                         {formatRelativeTime(e.created_at)}
@@ -174,16 +178,29 @@ export default function EventsPage() {
               {openCommentsFor === e.id && (
                 <div className="comments">
                   <div className="comments-list">
-                    {(comments[e.id] || []).map(c => (
+                    {(comments[e.id] || []).map(c => {
+                      const cAvatar = c.author_avatar || c.avatar || c.user_avatar;
+                      const cName = c.author || c.name || 'User';
+                      return (
                       <div className="comment" key={c.id}>
-                        <div className="comment-meta">
-                          <span className="comment-author">{c.author || 'User'}</span>
-                          <span className="dot">•</span>
-                          <span className="time">{formatRelativeTime(c.created_at)}</span>
+                        <div className="comment-avatar" aria-hidden>
+                          {cAvatar ? (
+                            <img src={cAvatar.startsWith('http') ? cAvatar : `${baseApi}${cAvatar}`} alt="avatar" />
+                          ) : (
+                            <span className="avatar-fallback">👤</span>
+                          )}
                         </div>
-                        <div className="comment-content">{c.content}</div>
+                        <div className="comment-body">
+                          <div className="comment-meta">
+                            <span className="comment-author">{cName}</span>
+                            <span className="dot">•</span>
+                            <span className="time">{formatRelativeTime(c.created_at)}</span>
+                          </div>
+                          <div className="comment-content">{c.content}</div>
+                        </div>
                       </div>
-                    ))}
+                      );
+                    })}
                     {(comments[e.id] || []).length === 0 && (
                       <div className="comment-empty">No comments yet.</div>
                     )}
@@ -199,7 +216,8 @@ export default function EventsPage() {
                 </div>
               )}
             </article>
-          ))}
+            );
+          })}
           {filtered.length === 0 && (
             <div className="empty">No events found.</div>
           )}

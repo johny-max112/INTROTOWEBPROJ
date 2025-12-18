@@ -11,6 +11,7 @@ export default function AnnouncementsPage() {
   const [openCommentsFor, setOpenCommentsFor] = useState(null);
   const [comments, setComments] = useState({}); // { [announcementId]: [ {id, author, content, created_at} ] }
   const [drafts, setDrafts] = useState({}); // { [announcementId]: "text" }
+  const baseApi = (process.env.REACT_APP_API_URL || 'http://localhost:4000/api').replace(/\/api\/?$/, '');
 
   useEffect(() => {
     API.get('/announcements')
@@ -93,7 +94,7 @@ export default function AnnouncementsPage() {
       <div className="announcement-container">
         <div className="announcement-topbar">
           <Link to="/" className="back-button" aria-label="Go back">
-            <span className="back-icon">←</span>
+            <span className="back-icon">&lt;</span>
           </Link>
           <div>
             <h2 className="page-title">Announcements</h2>
@@ -129,7 +130,7 @@ export default function AnnouncementsPage() {
                 <div className="author">
                   <div className="avatar" aria-hidden>
                     {a.author_avatar ? (
-                      <img src={a.author_avatar} alt="avatar" />
+                      <img src={a.author_avatar.startsWith('http') ? a.author_avatar : `${baseApi}${a.author_avatar}`} alt="avatar" />
                     ) : (
                       <span className="avatar-fallback">👤</span>
                     )}
@@ -179,12 +180,21 @@ export default function AnnouncementsPage() {
                   <div className="comments-list">
                     {(comments[a.id] || []).map(c => (
                       <div className="comment" key={c.id}>
-                        <div className="comment-meta">
-                          <span className="comment-author">{c.author || 'User'}</span>
-                          <span className="dot">•</span>
-                          <span className="time">{formatRelativeTime(c.created_at)}</span>
+                        <div className="comment-avatar" aria-hidden>
+                          {c.author_avatar ? (
+                            <img src={c.author_avatar.startsWith('http') ? c.author_avatar : `${baseApi}${c.author_avatar}`} alt="avatar" />
+                          ) : (
+                            <span className="avatar-fallback">👤</span>
+                          )}
                         </div>
-                        <div className="comment-content">{c.content}</div>
+                        <div className="comment-body">
+                          <div className="comment-meta">
+                            <span className="comment-author">{c.author || 'User'}</span>
+                            <span className="dot">•</span>
+                            <span className="time">{formatRelativeTime(c.created_at)}</span>
+                          </div>
+                          <div className="comment-content">{c.content}</div>
+                        </div>
                       </div>
                     ))}
                     {(comments[a.id] || []).length === 0 && (
